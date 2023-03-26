@@ -7,22 +7,32 @@ resource "libvirt_pool" "max_vms" {
 resource "libvirt_volume" "ubuntu1804" {
   name      = "ubuntu1804.qcow2"
   pool      = "${libvirt_pool.max_vms.name}"
-  format    = "qcow2"
   source    = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img"
-  size      = 10000000000
+  format    = "qcow2"
 }
 
 resource "libvirt_domain" "k8s-master" {
   name      = "k8s-master"
   memory    = "4096"
   vcpu      = 2
+  
   network_interface {
     network_name = "default"
-    model_type   = "virtio"
   }
+  
   disk {
     volume_id = "${libvirt_volume.ubuntu1804.id}"
-    pool      = "${libvirt_pool.max_vms.name}"
+  }
+  console {
+    type = "pty"
+    target_type = "serial"
+    target_port = "0"
+  }
+
+  graphics {
+    type = "spice"
+    listen_type = "address"
+    autoport = true
   }
 }
 
@@ -32,11 +42,9 @@ resource "libvirt_domain" "k8s-worker-1" {
   vcpu      = 2
   network_interface {
     network_name = "default"
-    model_type   = "virtio"
   }
   disk {
     volume_id = "${libvirt_volume.ubuntu1804.id}"
-    pool      = "${libvirt_pool.max_vms.name}"
   }
 }
 
@@ -46,11 +54,9 @@ resource "libvirt_domain" "k8s-worker-2" {
   vcpu      = 2
   network_interface {
     network_name = "default"
-    model_type   = "virtio"
   }
   disk {
     volume_id = "${libvirt_volume.ubuntu1804.id}"
-    pool      = "${libvirt_pool.max_vms.name}"
   }
 }
 
