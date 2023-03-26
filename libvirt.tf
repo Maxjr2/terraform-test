@@ -31,7 +31,7 @@ resource "libvirt_network" "kube-net" {
   name = "kube-net"
   mode = "bridge"
   domain = "k8s.local"
-
+}
 
 resource "libvirt_domain" "k8s-master" {
   name      = "k8s-master"
@@ -80,6 +80,7 @@ resource "libvirt_domain" "k8s-worker-2" {
   disk {
     volume_id = "${libvirt_volume.ubuntu18042.id}"
   }
+}
 
 resource "libvirt_domain" "k8s-worker-3" {
   name      = "k8s-worker-3"
