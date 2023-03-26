@@ -27,8 +27,8 @@ resource "libvirt_volume" "ubuntu18043" {
   format    = "qcow2"
 }
 
-resource "libvirt_network" "kube-net" {
-  name = "kube-net"
+resource "libvirt_network" "default" {
+  name = "default"
   mode = "nat"
   domain = "k8s.local"
 }
@@ -39,7 +39,7 @@ resource "libvirt_domain" "k8s-master" {
   vcpu      = 2
   
   network_interface {
-    network_name = "kube-net"
+    network_name = "default"
   }
   
   disk {
@@ -63,7 +63,7 @@ resource "libvirt_domain" "k8s-worker-1" {
   memory    = "2048"
   vcpu      = 1
   network_interface {
-    network_name = "kube-net"
+    network_name = "default"
   }
   disk {
     volume_id = "${libvirt_volume.ubuntu18041.id}"
@@ -75,7 +75,7 @@ resource "libvirt_domain" "k8s-worker-2" {
   memory    = "2048"
   vcpu      = 1
   network_interface {
-    network_name = "kube-net"
+    network_name = "default"
   }
   disk {
     volume_id = "${libvirt_volume.ubuntu18042.id}"
@@ -87,7 +87,7 @@ resource "libvirt_domain" "k8s-worker-3" {
   memory    = "2048"
   vcpu      = 1
   network_interface {
-    network_name = "kube-net"
+    network_name = "default"
   }
   disk {
     volume_id = "${libvirt_volume.ubuntu18043.id}"
