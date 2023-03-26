@@ -29,7 +29,7 @@ resource "libvirt_volume" "ubuntu18043" {
 
 resource "libvirt_network" "kube-net" {
   name = "kube-net"
-  mode = "bridge"
+  mode = "nat"
   domain = "k8s.local"
 }
 
