@@ -20,6 +20,7 @@ resource "libvirt_volume" "ubuntu1804" {
   pool      = "${libvirt_pool.max_vms.name}"
   format    = "qcow2"
   source    = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img"
+  size      = 10000000000
 }
 
 resource "libvirt_domain" "k8s-master" {
