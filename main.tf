@@ -18,7 +18,6 @@ resource "libvirt_pool" "max_vms" {
 resource "libvirt_volume" "ubuntu1804" {
   name      = "ubuntu1804.qcow2"
   pool      = "${libvirt_pool.max_vms.name}"
-  capacity  = "80192"
   format    = "qcow2"
   source    = "https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img"
 }
